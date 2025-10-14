@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2flu8gad1cws"]
+
+[ext_resource type="Script" uid="uid://cdi8jaewx37fv" path="res://scripts/laser_effect.gd" id="1_xwsbm"]
+
+[node name="LaserEffect" type="Node2D"]
+script = ExtResource("1_xwsbm")
+
+[node name="Line2D" type="Line2D" parent="."]
+z_index = -1
+width = 1.0
+default_color = Color(0, 1, 0.53333336, 1)

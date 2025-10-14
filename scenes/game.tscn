@@ -1,0 +1,94 @@
+[gd_scene load_steps=12 format=3 uid="uid://c1q40pnrfygre"]
+
+[ext_resource type="PackedScene" uid="uid://c4ndfqsgqomcm" path="res://scenes/player.tscn" id="1_uwrxv"]
+[ext_resource type="Texture2D" uid="uid://dqwu0d1odl3cr" path="res://assets/BlueFloor.png" id="3_p57ef"]
+[ext_resource type="Texture2D" uid="uid://byj7dbq5tdla0" path="res://assets/Stars1.png" id="4_iywne"]
+[ext_resource type="Script" uid="uid://dp64apq0wkd3t" path="res://scripts/camera_2d.gd" id="5_iywne"]
+[ext_resource type="Texture2D" uid="uid://dh6ol7g40jh42" path="res://assets/Particles.png" id="6_p57ef"]
+[ext_resource type="Script" uid="uid://dtdr3wbi2sjy6" path="res://scripts/target_manager.gd" id="7_u5sy4"]
+[ext_resource type="PackedScene" uid="uid://cbft3k3qxo0xf" path="res://scenes/target.tscn" id="8_gee14"]
+[ext_resource type="Script" uid="uid://dq1orkcdiqc2y" path="res://scripts/currency_display.gd" id="9_vtaks"]
+[ext_resource type="Texture2D" uid="uid://shgolvj0nm0p" path="res://assets/Energy.png" id="10_kvpfn"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_uwrxv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vtaks"]
+font_size = 22
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.8235294)
+
+[node name="Game" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(305, 23)
+
+[node name="Floor" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(-1, 1)
+shape = SubResource("WorldBoundaryShape2D_uwrxv")
+
+[node name="Sprite2D" type="Sprite2D" parent="Floor"]
+texture_repeat = 2
+texture = ExtResource("3_p57ef")
+offset = Vector2(0, 128)
+region_enabled = true
+region_rect = Rect2(0, 0, 2000, 256)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+scale = Vector2(2, 2)
+zoom = Vector2(2, 2)
+limit_enabled = false
+script = ExtResource("5_iywne")
+
+[node name="ParticlesParallax" type="Parallax2D" parent="Camera2D"]
+z_index = -9
+scale = Vector2(0.5, 0.5)
+scroll_scale = Vector2(0.3, 0.3)
+repeat_size = Vector2(128, 128)
+repeat_times = 20
+follow_viewport = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Camera2D/ParticlesParallax"]
+texture_repeat = 2
+texture = ExtResource("6_p57ef")
+region_enabled = true
+region_rect = Rect2(0, 0, 128, 128)
+
+[node name="StarsParallax" type="Parallax2D" parent="Camera2D"]
+z_index = -10
+scale = Vector2(0.5, 0.5)
+scroll_scale = Vector2(0.1, 0.1)
+repeat_size = Vector2(128, 128)
+repeat_times = 5
+follow_viewport = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Camera2D/StarsParallax"]
+texture_repeat = 2
+texture = ExtResource("4_iywne")
+region_enabled = true
+region_rect = Rect2(0, 0, 128, 128)
+
+[node name="TargetManager" type="Node2D" parent="."]
+script = ExtResource("7_u5sy4")
+target_scene = ExtResource("8_gee14")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CurrencyDisplay" type="HBoxContainer" parent="CanvasLayer"]
+offset_right = 100.0
+offset_bottom = 40.0
+scale = Vector2(2, 2)
+script = ExtResource("9_vtaks")
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/CurrencyDisplay"]
+layout_mode = 2
+texture = ExtResource("10_kvpfn")
+expand_mode = 3
+
+[node name="CurrencyLabel" type="Label" parent="CanvasLayer/CurrencyDisplay"]
+layout_mode = 2
+text = "400000"
+label_settings = SubResource("LabelSettings_vtaks")
