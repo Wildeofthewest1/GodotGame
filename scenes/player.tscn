@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://c4ndfqsgqomcm"]
+[gd_scene load_steps=66 format=3 uid="uid://c4ndfqsgqomcm"]
 
 [ext_resource type="Texture2D" uid="uid://bje8sodgmo0xo" path="res://assets/sprites/Pyramid.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://kax6daj305m" path="res://scripts/player.gd" id="1_g2els"]
@@ -428,15 +428,12 @@ animations = [{
 }],
 "loop": true,
 "name": &"default",
-"speed": 5.0
+"speed": 6.0
 }]
 
 [sub_resource type="Gradient" id="Gradient_3vyb7"]
 offsets = PackedFloat32Array(0, 0.77397263, 1)
 colors = PackedColorArray(0.41068676, 0.016724858, 0.86043686, 1, 0.43529412, 0.6431373, 1, 1, 0, 0, 0, 0)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
-radius = 24.020824
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_g2els"]
 
@@ -448,7 +445,7 @@ z_index = 3
 rotation = 6.2831855
 sprite_frames = SubResource("SpriteFrames_nubpm")
 autoplay = "default"
-frame_progress = 0.91405463
+frame_progress = 0.6388317
 speed_scale = 10.0
 offset = Vector2(0, -5)
 
@@ -480,15 +477,13 @@ target_position = Vector2(0, -30)
 collision_mask = 3
 collide_with_areas = true
 
-[node name="HoverArea" type="Area2D" parent="."]
-z_index = 15
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HoverArea"]
-shape = SubResource("CircleShape2D_3vyb7")
-debug_color = Color(0, 0.646178, 0.25045592, 0.41960785)
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_g2els")
 
-[connection signal="mouse_entered" from="HoverArea" to="." method="_on_hover_area_mouse_entered"]
-[connection signal="mouse_exited" from="HoverArea" to="." method="_on_hover_area_mouse_exited"]
+[node name="TangentLine" type="Line2D" parent="."]
+visible = false
+width = 2.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="TrajectoryLine" type="Line2D" parent="."]
+width = 2.0

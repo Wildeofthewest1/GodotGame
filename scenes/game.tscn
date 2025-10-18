@@ -1,7 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://c1q40pnrfygre"]
 
 [ext_resource type="PackedScene" uid="uid://c4ndfqsgqomcm" path="res://scenes/player.tscn" id="1_uwrxv"]
-[ext_resource type="Texture2D" uid="uid://dqwu0d1odl3cr" path="res://assets/BlueFloor.png" id="3_p57ef"]
 [ext_resource type="Texture2D" uid="uid://byj7dbq5tdla0" path="res://assets/Stars1.png" id="4_iywne"]
 [ext_resource type="Script" uid="uid://dp64apq0wkd3t" path="res://scripts/camera_2d.gd" id="5_iywne"]
 [ext_resource type="Texture2D" uid="uid://dh6ol7g40jh42" path="res://assets/Particles.png" id="6_p57ef"]
@@ -9,8 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://cbft3k3qxo0xf" path="res://scenes/target.tscn" id="8_gee14"]
 [ext_resource type="Script" uid="uid://dq1orkcdiqc2y" path="res://scripts/currency_display.gd" id="9_vtaks"]
 [ext_resource type="Texture2D" uid="uid://shgolvj0nm0p" path="res://assets/Energy.png" id="10_kvpfn"]
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://b2vs0lltqlj41" path="res://scenes/patrick.tscn" id="10_vtaks"]
+[ext_resource type="PackedScene" uid="uid://pxqlqfp0kqxm" path="res://scenes/planet.tscn" id="11_kvpfn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vtaks"]
 font_size = 22
@@ -22,20 +21,7 @@ shadow_color = Color(0, 0, 0, 0.8235294)
 [node name="Game" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
-position = Vector2(305, 23)
-
-[node name="Floor" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
-position = Vector2(-1, 1)
-shape = SubResource("WorldBoundaryShape2D_uwrxv")
-
-[node name="Sprite2D" type="Sprite2D" parent="Floor"]
-texture_repeat = 2
-texture = ExtResource("3_p57ef")
-offset = Vector2(0, 128)
-region_enabled = true
-region_rect = Rect2(0, 0, 2000, 256)
+position = Vector2(70, -69)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 scale = Vector2(2, 2)
@@ -92,3 +78,11 @@ expand_mode = 3
 layout_mode = 2
 text = "400000"
 label_settings = SubResource("LabelSettings_vtaks")
+
+[node name="Planet" parent="." instance=ExtResource("11_kvpfn")]
+position = Vector2(295, -236)
+
+[node name="Patrick" parent="." instance=ExtResource("10_vtaks")]
+position = Vector2(165, -139)
+can_sleep = false
+gravitational_constant = 10.0
