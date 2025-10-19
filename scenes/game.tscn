@@ -4,12 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://byj7dbq5tdla0" path="res://assets/Stars1.png" id="4_iywne"]
 [ext_resource type="Script" uid="uid://dp64apq0wkd3t" path="res://scripts/camera_2d.gd" id="5_iywne"]
 [ext_resource type="Texture2D" uid="uid://dh6ol7g40jh42" path="res://assets/Particles.png" id="6_p57ef"]
-[ext_resource type="Script" uid="uid://dtdr3wbi2sjy6" path="res://scripts/target_manager.gd" id="7_u5sy4"]
-[ext_resource type="PackedScene" uid="uid://cbft3k3qxo0xf" path="res://scenes/target.tscn" id="8_gee14"]
 [ext_resource type="Script" uid="uid://dq1orkcdiqc2y" path="res://scripts/currency_display.gd" id="9_vtaks"]
+[ext_resource type="Script" uid="uid://dwx4gbp5lrn2f" path="res://scripts/planet_spawner.gd" id="10_dinhu"]
 [ext_resource type="Texture2D" uid="uid://shgolvj0nm0p" path="res://assets/Energy.png" id="10_kvpfn"]
+[ext_resource type="Script" uid="uid://dx7w5iy18eayl" path="res://scenes/enemy_spawner.gd" id="10_kvuet"]
 [ext_resource type="PackedScene" uid="uid://b2vs0lltqlj41" path="res://scenes/patrick.tscn" id="10_vtaks"]
-[ext_resource type="PackedScene" uid="uid://pxqlqfp0kqxm" path="res://scenes/planet.tscn" id="11_kvpfn"]
+[ext_resource type="PackedScene" uid="uid://d3tpmgvlxb6f5" path="res://scenes/enemy.tscn" id="11_kvpfn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_vtaks"]
 font_size = 22
@@ -34,7 +34,7 @@ z_index = -9
 scale = Vector2(0.5, 0.5)
 scroll_scale = Vector2(0.3, 0.3)
 repeat_size = Vector2(128, 128)
-repeat_times = 20
+repeat_times = 14
 follow_viewport = false
 
 [node name="Sprite2D" type="Sprite2D" parent="Camera2D/ParticlesParallax"]
@@ -48,7 +48,7 @@ z_index = -10
 scale = Vector2(0.5, 0.5)
 scroll_scale = Vector2(0.1, 0.1)
 repeat_size = Vector2(128, 128)
-repeat_times = 5
+repeat_times = 12
 follow_viewport = false
 
 [node name="Sprite2D" type="Sprite2D" parent="Camera2D/StarsParallax"]
@@ -56,10 +56,6 @@ texture_repeat = 2
 texture = ExtResource("4_iywne")
 region_enabled = true
 region_rect = Rect2(0, 0, 128, 128)
-
-[node name="TargetManager" type="Node2D" parent="."]
-script = ExtResource("7_u5sy4")
-target_scene = ExtResource("8_gee14")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -79,10 +75,18 @@ layout_mode = 2
 text = "400000"
 label_settings = SubResource("LabelSettings_vtaks")
 
-[node name="Planet" parent="." instance=ExtResource("11_kvpfn")]
-position = Vector2(295, -236)
-
 [node name="Patrick" parent="." instance=ExtResource("10_vtaks")]
 position = Vector2(165, -139)
 can_sleep = false
 gravitational_constant = 10.0
+
+[node name="PlanetSpawner" type="Node2D" parent="."]
+script = ExtResource("10_dinhu")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("11_kvpfn")]
+position = Vector2(128, -70)
+
+[node name="EnemySpawner" type="Node2D" parent="."]
+script = ExtResource("10_kvuet")
+enemy_scene = ExtResource("11_kvpfn")
+respawn_position = Vector2(-500, -500)

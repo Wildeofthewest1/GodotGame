@@ -439,6 +439,9 @@ colors = PackedColorArray(0.41068676, 0.016724858, 0.86043686, 1, 0.43529412, 0.
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_g2els")
+max_speed = 300.0
+thrust_power = 800.0
+prediction_steps = 100
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 3

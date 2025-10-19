@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-@export var gravitational_constant: float = 100
+@export var gravitational_constant: float = 1
 
 func _physics_process(delta: float) -> void:
 	for planet in get_tree().get_nodes_in_group("planets"):

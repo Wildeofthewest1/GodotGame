@@ -1,24 +1,31 @@
 extends CharacterBody2D
+@onready var laser = $AnimatedSprite2D/Laser
+@onready var anim := $AnimatedSprite2D
+@onready var tangent_line: Line2D = $TangentLine
+@onready var trajectory_line: Line2D = $TrajectoryLine
+
 
 @export var max_speed: float = 600.0
 @export var thrust_power: float = 1200.0
 @export var drag: float = 1  # drag factor per frame, closer to 1 = less friction
+@export var gravitational_constant: float = 10
+@export var prediction_steps: int = 200
+@export var prediction_dt: float = 0.01  # seconds per step
+@export var laser_dist: float = 1000
+
+@export var max_health: int = 3
+var health: int
+
+func _ready():
+	health = max_health
 
 var currency: int = 0
-@onready var laser = $AnimatedSprite2D/Laser
-@onready var anim := $AnimatedSprite2D
-
 func add_currency(amount: int):
 	currency += amount
 	print("Currency:", currency)
 
-@export var gravitational_constant: float = 2500
-
-var tangent = Vector2.ZERO
-
-@onready var tangent_line: Line2D = $TangentLine
-
 func _physics_process(delta):
+	
 	var mouse_pos = get_global_mouse_position()
 	var mouse_direction = (mouse_pos - global_position).normalized()
 
@@ -71,19 +78,13 @@ func _physics_process(delta):
 	move_and_slide()
 	
 	_update_trajectory_line()
-	
 
+var tangent = Vector2.ZERO
 func update_tangent_line(dir: Vector2):
 	# draw line relative to the ship
 	tangent_line.clear_points()
 	tangent_line.add_point(Vector2.ZERO)
 	tangent_line.add_point(dir * 100)
-
-
-
-@onready var trajectory_line: Line2D = $TrajectoryLine
-@export var prediction_steps: int = 5000
-@export var prediction_dt: float = 0.1  # seconds per step
 
 func _update_trajectory_line():
 	var points: Array[Vector2] = []
@@ -149,13 +150,6 @@ func _update_trajectory_line():
 	for p in points:
 		trajectory_line.add_point(p)
 
-
-
-
-
-
-
-
 func update_animation():
 	var move_speed = velocity.length()
 	if move_speed > 0.1:
@@ -167,7 +161,7 @@ func update_animation():
 
 func fire_laser():
 	# Update raycast direction (so it follows rotation)
-	var direction = Vector2(0, -300)
+	var direction = Vector2(0, -laser_dist)
 
 	# Force update the RayCast2D
 	laser.target_position = direction
@@ -185,7 +179,7 @@ func fire_laser():
 		print("Hit:")
 	else:
 		print("No hit")
-		direction = Vector2(0, -300).rotated($AnimatedSprite2D.rotation)
+		direction = Vector2(0, -laser_dist).rotated($AnimatedSprite2D.rotation)
 
 		hit_position = laser.global_position + direction
 
@@ -210,3 +204,30 @@ func spawn_explosion(position: Vector2):
 	# If the particles are one-shot, trigger them manually
 	var particles = explosion.get_node("explosion")
 	particles.emitting = true
+
+# ===================================================
+# === Damage system (called when enemy hits player) ==
+# ===================================================
+func take_hit():
+	health -= 1
+	print("Player took a hit! Health:", health)
+
+	# Flash or blink for feedback
+	flash_damage()
+
+	if health <= 0:
+		respawn()
+
+func flash_damage():
+	# Quickly tint the player sprite red to show damage
+	if has_node("AnimatedSprite2D"):
+		var sprite = $AnimatedSprite2D
+		var original_modulate = sprite.modulate
+		sprite.modulate = Color(1, 0.3, 0.3)
+		await get_tree().create_timer(0.15).timeout
+		sprite.modulate = original_modulate
+
+func respawn():
+	print("Player respawning...")
+	global_position = Vector2(0, 0)
+	health = max_health

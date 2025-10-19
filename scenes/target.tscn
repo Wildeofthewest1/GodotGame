@@ -9,7 +9,6 @@ radius = 16.0
 [node name="Target" type="Area2D" groups=["targets"]]
 collision_layer = 2
 script = ExtResource("1_b5a2r")
-health = 2
 reward_amount = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
